@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/mathi/CLionProjects/projet_transversal
+# Install script for directory: C:/Users/Noé/CLionProjects/projet_transversal
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "C:/Users/mathi/CLionProjects/projet_transversal/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "C:/Users/Noé/CLionProjects/projet_transversal/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
