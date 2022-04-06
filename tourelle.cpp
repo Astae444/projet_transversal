@@ -6,14 +6,16 @@ using namespace std;
 class Tourelle {
 private:
     string nom;
+    int prix;
 
 protected:
-    int position;
-
+    int x;
+    int y;
 
 public:
-    Tourelle(string nom, int position) {
+    Tourelle(string nom, int x, int y) {
         this->nom = nom;
-        this->position = position;
+        this->x = x;
+        this->x = y;
     }
 };

@@ -22,11 +22,11 @@ public:
 
     void afficher() {
         int num_ligne = 1;
-        cout << "Map " << this->niveau << " : " << endl;
+        cout << "Niveau " << this->niveau << " : " << endl;
+        cout << "      A     B     C     D     E     F     G     H     I     J     K     L     M     N     O     P     Q     R     S\n\n";
         for (int i = 0; i < Map::ligne; ++i) {
-            cout << num_ligne << endl;
+            cout << num_ligne << endl << endl;
             num_ligne = num_ligne + 1;
         }
     }
-
 };
