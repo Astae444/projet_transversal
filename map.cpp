@@ -1,30 +1,32 @@
 #include <iostream>
-#include <vector>
 
 using namespace std;
 
 int ligne = 5;
 int colonne = 25;
-vector<vector<string> > map;
-string cases = " . ";
 
-void creer_map() {
-    for (int i = 0; i < ligne; i++) {
-        vector<string> v1;
+class Map {
+private:
+    string niveau;
 
-        for (int j = 0; j < colonne; j++) {
-            v1.push_back(cases);
+protected:
+    int ligne;
+    int colonne;
+
+public:
+    Map(string niveau, int ligne, int colonne) {
+        this->niveau = niveau;
+        this->ligne = ligne;
+        this->colonne = colonne;
+    }
+
+    void afficher() {
+        int num_ligne = 1;
+        cout << "Map " << this->niveau << " : " << endl;
+        for (int i = 0; i < Map::ligne; ++i) {
+            cout << num_ligne << endl;
+            num_ligne = num_ligne + 1;
         }
-
-        map.push_back(v1);
     }
-}
 
-
-void afficher(vector<vector<string> > map) {
-    for (int i = 0; i < map.size(); i++) {
-        for (int j = 0; j < map[i].size(); j++)
-            cout << map[i][j] << " ";
-        cout << endl;
-    }
-}
+};
