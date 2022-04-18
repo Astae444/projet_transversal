@@ -10,7 +10,7 @@ protected:
     vector<vector<string>> jardin;
 
 public:
-    // On initialise la grille pour qu'elle ait la bonne taille et qu'elle soit remplie par des 0
+    // On initialise la grille pour qu'elle ait la bonne taille et qu'elle soit remplie par des espaces
     Map(int taille) : jardin(taille, vector<string>(taille, " ")) {}
 
 
@@ -30,14 +30,16 @@ public:
             }
             out << "\n";
         }
-        cout << endl;
+        cout << endl << endl;
     }
+
 
     string GetValue(int ligne, int colonne) const {
         // use wraparound for too-large values
         // alternatively you could throw if row and/or col are too large
         return jardin[ligne % jardin.size()][colonne % jardin.size()];
     }
+
 
     int ajouterTourelle(int argent) {
         if (argent >= 250) {
@@ -63,6 +65,7 @@ public:
         return argent;
     }
 
+
     int supprimerTourelle(int argent) {
         cout << "\nEntrez la ligne: ";
         int ligne;
@@ -87,20 +90,27 @@ public:
         return argent;
     }
 
+
     void apparitionEnnemie() {
         int ligne = rand() % 7;
         jardin[ligne][9] = "E";
     }
 
-    void avancerEnnemie() {
+
+    int avancerEnnemie(int vie) {
         for (int i = 0; i < jardin.size() - 3; i++) {
             for (int j = 0; j < jardin[i].size(); j++) {
                 if (jardin[i][j] == "E") {
                     jardin[i][j] = " ";
-                    jardin[i][j - 1] = "E";
+                    if (j > 0) {
+                        jardin[i][j - 1] = "E";
+                    } else if (j == 0) {
+                        vie = vie - 1;
+                    }
                 }
             }
         }
+        return vie;
     }
 
 };
