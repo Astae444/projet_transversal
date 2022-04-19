@@ -2,6 +2,7 @@
 #include <vector>
 #include <cstdlib>
 #include <ctime>
+#include <chrono>
 
 using namespace std;
 
@@ -35,8 +36,6 @@ public:
 
 
     string GetValue(int ligne, int colonne) const {
-        // use wraparound for too-large values
-        // alternatively you could throw if row and/or col are too large
         return jardin[ligne % jardin.size()][colonne % jardin.size()];
     }
 
@@ -111,6 +110,46 @@ public:
             }
         }
         return vie;
+    }
+
+
+    void tirer() {
+        for (int i = 0; i < jardin.size() - 3; i++) {
+            for (int j = 0; j < jardin[i].size(); j++) {
+                if (jardin[i][j] == "T") {
+                    jardin[i][j + 1] = "-";
+                }
+            }
+        }
+    }
+
+
+    int avancerProjectile(int argent) {
+        for (int i = 0; i < jardin.size() - 3; i++) {
+            for (int j = jardin.size() - 3; j > 0; j--) {
+                if (jardin[i][j] == "-") {
+                    jardin[i][j] = " ";
+                    // On vérifie la présence éventuelle d'ennemie sur la colonne suivante
+                    if (jardin[i][j + 1] == "E") {
+                        jardin[i][j + 1] = " ";
+                        argent = argent + 50;
+                    } else {
+                        jardin[i][j + 1] = "-";
+                    }
+                }
+            }
+        }
+        return argent;
+    }
+
+
+    int vague(int vie, int argent) {
+        apparitionEnnemie();
+        tirer();
+        avancerEnnemie(vie);
+        avancerProjectile(argent);
+
+        return vie, argent;
     }
 
 };
