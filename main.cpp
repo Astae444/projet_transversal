@@ -27,7 +27,7 @@ int main(int argc, char **argv) {
             // La boucle de la partie
             while (vie > 0) {
 
-                board.print(cout);
+                board.afficher(cout);
                 srand(time(NULL));
 
                 cout << "\tVotre budget est de " << argent << endl;

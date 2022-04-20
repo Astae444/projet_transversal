@@ -3,9 +3,12 @@
 #include <cstdlib>
 #include <ctime>
 #include <chrono>
+#include <thread>
 #include <tuple>
 
 using namespace std;
+using namespace this_thread;
+using namespace chrono;
 
 class Map {
 private:
@@ -16,7 +19,7 @@ public:
     Map(int taille) : jardin(taille, vector<string>(taille, " ")) {}
 
 
-    void print(ostream &out) const {
+    void afficher(ostream &out) const {
         out << endl << "\n\tMode infini\n\t";
         // On affiche la ligne définissant les coordonnées de chaque colonne
         for (int i = 0; i < jardin.size(); i++) {
@@ -118,7 +121,11 @@ public:
         for (int i = 0; i < jardin.size() - 3; i++) {
             for (int j = 0; j < jardin[i].size(); j++) {
                 if (jardin[i][j] == "T") {
-                    jardin[i][j + 1] = "-";
+                    if (jardin[i][j + 1] == "T") {
+                        jardin[i][j + 3] = "-";
+                    } else {
+                        jardin[i][j + 1] = "-";
+                    }
                 }
             }
         }
@@ -130,11 +137,14 @@ public:
             for (int j = jardin.size() - 3; j > 0; j--) {
                 if (jardin[i][j] == "-") {
                     jardin[i][j] = " ";
-                    // On vérifie la présence éventuelle d'ennemie sur la colonne suivante
+                    // On vérifie la présence éventuelle d'ennemie ou de tourelle sur la colonne suivante
                     if (jardin[i][j + 1] == "E") {
                         jardin[i][j + 1] = " ";
                         argent = argent + 50;
-                    } else {
+                    } else if (jardin[i][j + 1] == "T") {
+                        jardin[i][j + 2] = "-";
+                    }
+                    else {
                         jardin[i][j + 1] = "-";
                     }
                 }
@@ -149,9 +159,11 @@ public:
         for (int i = 0; i < 3; ++i) {
             apparitionEnnemie();
             apparitionEnnemie();
-            if (tour % 2 == 0) {
+            if (tour % 3 == 0) {
                 tirer();
             }
+            afficher(cout);
+            sleep_for(1s);
             vie = avancerEnnemie(vie);
             argent = avancerProjectile(argent);
             tour = tour + 1;
