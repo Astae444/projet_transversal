@@ -1,6 +1,6 @@
 #include <iostream>
-#include <vector>
 #include <cstdlib>
+#include <vector>
 #include <ctime>
 #include <chrono>
 #include <thread>
@@ -19,21 +19,30 @@ public:
     Map(int taille) : jardin(taille, vector<string>(taille, " ")) {}
 
 
-    void afficher(ostream &out) const {
-        out << endl << "\n\tMode infini\n\t";
+    // La fonction permettant de remettre à 0 le jardin pour commencer une nouvelle partie
+    void nouvellePartie() {
+        for (int i = 0; i < jardin.size() - 3; ++i) {
+            for (int j = 0; j < jardin.size(); ++j) {
+                jardin[i][j] = " ";
+            }
+        }
+    }
+
+    void afficher() {
+        cout << endl << "\n\tMode infini\n\t";
         // On affiche la ligne définissant les coordonnées de chaque colonne
         for (int i = 0; i < jardin.size(); i++) {
-            out << i << "    ";
+            cout << i << "    ";
         }
         // On affiche le reste des lignes
-        out << "\n\n";
+        cout << "\n\n";
         // Cette boucle définit le nombre de lignes du jeu
         for (int i = 0; i < jardin.size() - 3; i++) {
-            out << i << "\t";
+            cout << i << "\t";
             for (int j = 0; j < jardin[i].size(); j++) {
-                out << jardin[i][j] << "    ";
+                cout << jardin[i][j] << "    ";
             }
-            out << "\n";
+            cout << "\n";
         }
         cout << endl << endl;
     }
@@ -164,16 +173,22 @@ public:
     tuple<int, int> vague(int vie, int argent) {
         int tour = 0;
         for (int i = 0; i < 3; ++i) {
-            apparitionEnnemie();
-            apparitionEnnemie();
-            if (tour % 3 == 0) {
-                argent = tirer(argent);
+            // On vérifie que le joueur a encore des vies avant de relancer un tour
+            if (vie > 0) {
+                // 2 Ennemis maximums apparaissent par tour
+                apparitionEnnemie();
+                apparitionEnnemie();
+                // Les tourelles tirent tous les 3 tours
+                if (tour % 2 == 0) {
+                    argent = tirer(argent);
+                }
+                afficher();
+                // On attend une seconde pour laisser au joueur le temps de comprendre la partie
+                sleep_for(1s);
+                vie = avancerEnnemie(vie);
+                argent = avancerProjectile(argent);
+                tour = tour + 1;
             }
-            afficher(cout);
-            sleep_for(1s);
-            vie = avancerEnnemie(vie);
-            argent = avancerProjectile(argent);
-            tour = tour + 1;
         }
         argent = argent + 300;
         tuple<int, int> vieArgent(vie, argent);

@@ -6,8 +6,6 @@ using namespace std;
 int main(int argc, char **argv) {
 
     Map board(10);
-    int argent = 1500;
-    int vie = 3;
     string instruction;
 
     // Boucle du jeu
@@ -20,14 +18,17 @@ int main(int argc, char **argv) {
                 << "REGLES DU JEU : "
                 << "Positionnez vos tourelles ('T') de sorte a empecher les ennemies ('E') d'arriver a gauche de la map, si 3 ennemis arrivent a passer, c'est la fin de la partie !"
                 << endl
-                << "Chaque tourelle vous coutera 250 et vous recuperez 150 si vous la detruisez vous meme, vous gagnez aussi de l'argent a la fin de chaque vague"
+                << "Chaque tourelle vous coutera 250 et vous recuperez 150 si vous la detruisez vous meme, vous gagnez aussi 50 pour chaque ennemie tue et 300 tous les 3 tours a la fin de chaque vague"
                 << endl << "C'est compris ? alors tapez 'n' pour debuter une nouvelle partie !" << endl;
         cin >> instruction;
         if (instruction == "n") {
             // La boucle de la partie
+            int argent = 1000;
+            int vie = 3;
+            board.nouvellePartie();
             while (vie > 0) {
 
-                board.afficher(cout);
+                board.afficher();
                 srand(time(NULL));
 
                 cout << "\tVotre budget est de " << argent << endl;
