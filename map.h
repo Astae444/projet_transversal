@@ -117,18 +117,24 @@ public:
     }
 
 
-    void tirer() {
+    // La fonction qui fait tirer des projectiles aux tourelles, on s'assure que les projectiles tirés ne viennent pas
+    // détruire une tourelle qui suivrait la première et que le projectile tuerait bien l'ennemie s'il venait à apparaître sur lui
+    int tirer(int argent) {
         for (int i = 0; i < jardin.size() - 3; i++) {
             for (int j = 0; j < jardin[i].size(); j++) {
                 if (jardin[i][j] == "T") {
                     if (jardin[i][j + 1] == "T") {
                         jardin[i][j + 3] = "-";
+                    } else if (jardin[i][j + 1] == "E") {
+                        jardin[i][j + 1] = " ";
+                        argent = argent + 50;
                     } else {
                         jardin[i][j + 1] = "-";
                     }
                 }
             }
         }
+        return argent;
     }
 
 
@@ -143,8 +149,7 @@ public:
                         argent = argent + 50;
                     } else if (jardin[i][j + 1] == "T") {
                         jardin[i][j + 2] = "-";
-                    }
-                    else {
+                    } else {
                         jardin[i][j + 1] = "-";
                     }
                 }
@@ -154,13 +159,15 @@ public:
     }
 
 
+    // La fonction vague retournera un tuple, car elle prend en compte toutes les fonctions précédentes
+    // donc certaines qui utilisent la notion d'argent et d'autre de vie
     tuple<int, int> vague(int vie, int argent) {
         int tour = 0;
         for (int i = 0; i < 3; ++i) {
             apparitionEnnemie();
             apparitionEnnemie();
             if (tour % 3 == 0) {
-                tirer();
+                argent = tirer(argent);
             }
             afficher(cout);
             sleep_for(1s);
