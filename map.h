@@ -1,7 +1,7 @@
 #include <iostream>
-#include <cstdlib>
 #include <vector>
 #include <ctime>
+#include <cstdlib>
 #include <chrono>
 #include <thread>
 #include <tuple>
@@ -27,6 +27,7 @@ public:
             }
         }
     }
+
 
     void afficher() {
         cout << endl << "\n\tMode infini\n\t";
@@ -60,12 +61,16 @@ public:
             cout << "Entrez la colonne: ";
             int colonne;
             cin >> colonne;
-            while (colonne > 9 or colonne < 0) { // On vérifie s'il y a bien un input de l'utilisateur
+            while (colonne > 9 or colonne < 0 or !cin) { // On vérifie s'il y a bien un input de l'utilisateur
                 cout << "Entrez une colonne correcte: ";
                 cin >> colonne;
             }
-            jardin[ligne % jardin.size()][colonne % jardin.size()] = "T";
-            argent = argent - 250;
+            if (jardin[ligne % jardin.size()][colonne % jardin.size()] != " ") {
+                cout << "ERREUR : il y a deja quelque chose ici";
+            } else {
+                jardin[ligne % jardin.size()][colonne % jardin.size()] = "T";
+                argent = argent - 250;
+            }
         } else {
             cout << endl << "ERREUR : Il vous faut 250 pour pouvoir construire une tourelle" << endl;
         }
@@ -114,8 +119,12 @@ public:
                 cout << "Entrez une colonne correcte: ";
                 cin >> colonne;
             }
-            jardin[ligne % jardin.size()][colonne % jardin.size()] = "B";
-            argent = argent - 300;
+            if (jardin[ligne % jardin.size()][colonne % jardin.size()] != " ") {
+                cout << "ERREUR : il y a deja quelque chose ici";
+            } else {
+                jardin[ligne % jardin.size()][colonne % jardin.size()] = "B";
+                argent = argent - 300;
+            }
         } else {
             cout << endl << "ERREUR : Il vous faut 300 pour pouvoir construire une bombe" << endl;
         }
@@ -139,8 +148,8 @@ public:
                         jardin[i + 1][j] = " ";
                         argent = argent + 50;
                     }
-                    if (jardin[i - 1][j + 1] == "E") {
-                        jardin[i - 1][j + 1] = " ";
+                    if (jardin[i - 1][j] == "E") {
+                        jardin[i - 1][j] = " ";
                         argent = argent + 50;
                     }
                     jardin[i][j] = " ";
@@ -225,7 +234,7 @@ public:
                 // 2 Ennemis maximums apparaissent par tour
                 apparitionEnnemie();
                 apparitionEnnemie();
-                // Les tourelles tirent tous les 3 tours
+                // Les tourelles tirent un tour sur 2
                 if (tour % 2 == 0) {
                     argent = tirer(argent);
                 }
