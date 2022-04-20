@@ -48,11 +48,6 @@ public:
     }
 
 
-    string GetValue(int ligne, int colonne) const {
-        return jardin[ligne % jardin.size()][colonne % jardin.size()];
-    }
-
-
     int ajouterTourelle(int argent) {
         if (argent >= 250) {
             cout << "\nEntrez la ligne: ";
@@ -100,6 +95,58 @@ public:
             cout << endl << "ERREUR : Il n'y a pas de tourelle a cet emplacement" << endl;
         }
         return argent;
+    }
+
+
+    int poserBombe(int argent) {
+        if (argent >= 300) {
+            cout << "\nEntrez la ligne: ";
+            int ligne;
+            cin >> ligne;
+            while (ligne > 6 or ligne < 0 or !cin) { // On vérifie s'il y a bien un input de l'utilisateur
+                cout << "\nEntrez une ligne correcte: ";
+                cin >> ligne;
+            }
+            cout << "Entrez la colonne: ";
+            int colonne;
+            cin >> colonne;
+            while (colonne > 9 or colonne < 0) { // On vérifie s'il y a bien un input de l'utilisateur
+                cout << "Entrez une colonne correcte: ";
+                cin >> colonne;
+            }
+            jardin[ligne % jardin.size()][colonne % jardin.size()] = "B";
+            argent = argent - 300;
+        } else {
+            cout << endl << "ERREUR : Il vous faut 300 pour pouvoir construire une bombe" << endl;
+        }
+        return argent;
+    }
+
+
+    int exploser(int argent) {
+        for (int i = 0; i < jardin.size() - 3; i++) {
+            for (int j = 0; j < jardin[i].size(); j++) {
+                if (jardin[i][j] == "B") {
+                    if (jardin[i][j + 1] == "E") {
+                        jardin[i][j + 1] = " ";
+                        argent = argent + 50;
+                    }
+                    if (jardin[i][j - 1] == "E") {
+                        jardin[i][j - 1] = " ";
+                        argent = argent + 50;
+                    }
+                    if (jardin[i + 1][j] == "E") {
+                        jardin[i + 1][j] = " ";
+                        argent = argent + 50;
+                    }
+                    if (jardin[i - 1][j + 1] == "E") {
+                        jardin[i - 1][j + 1] = " ";
+                        argent = argent + 50;
+                    }
+                    jardin[i][j] = " ";
+                }
+            }
+        }
     }
 
 
@@ -182,6 +229,7 @@ public:
                 if (tour % 2 == 0) {
                     argent = tirer(argent);
                 }
+                argent = exploser(argent);
                 afficher();
                 // On attend une seconde pour laisser au joueur le temps de comprendre la partie
                 sleep_for(1s);

@@ -33,15 +33,18 @@ int main(int argc, char **argv) {
 
                 cout << "\tVotre budget est de " << argent << endl;
                 cout << "\tIl vous reste " << vie << " vies \n\n" << endl;
-                cout << "Entrez 'p' pour placer des tourelles" << endl;
-                cout << "Entrez 's' pour supprimer des tourelles" << endl;
-                cout << "Entrez 'v' pour lancer la premiere vague" << endl;
+                cout << "Entrez '0' pour placer une bombe" << endl;
+                cout << "Entrez '1' pour placer une tourelle" << endl;
+                cout << "Entrez '2' pour supprimer une tourelle" << endl;
+                cout << "Entrez '3' pour lancer la premiere vague" << endl;
                 cin >> instruction;
-                if (instruction == "p") {
+                if (instruction == "0") {
+                    argent = board.poserBombe(argent);
+                } else if (instruction == "1") {
                     argent = board.ajouterTourelle(argent);
-                } else if (instruction == "s") {
+                } else if (instruction == "2") {
                     argent = board.supprimerTourelle(argent);
-                } else if (instruction == "v") {
+                } else if (instruction == "3") {
                     // La fonction vague renvoie plusieurs variables donc on utilise un tuple pour les attribuer
                     tuple<int, int> vieArgent(vie, argent);
                     vieArgent = board.vague(vie, argent);
