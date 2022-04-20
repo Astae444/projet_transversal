@@ -3,11 +3,12 @@
 #include <cstdlib>
 #include <ctime>
 #include <chrono>
+#include <tuple>
 
 using namespace std;
 
 class Map {
-protected:
+private:
     vector<vector<string>> jardin;
 
 public:
@@ -143,13 +144,21 @@ public:
     }
 
 
-    int vague(int vie, int argent) {
-        apparitionEnnemie();
-        tirer();
-        avancerEnnemie(vie);
-        avancerProjectile(argent);
-
-        return vie, argent;
+    tuple<int, int> vague(int vie, int argent) {
+        int tour = 0;
+        for (int i = 0; i < 3; ++i) {
+            apparitionEnnemie();
+            apparitionEnnemie();
+            if (tour % 2 == 0) {
+                tirer();
+            }
+            vie = avancerEnnemie(vie);
+            argent = avancerProjectile(argent);
+            tour = tour + 1;
+        }
+        argent = argent + 300;
+        tuple<int, int> vieArgent(vie, argent);
+        return vieArgent;
     }
 
 };

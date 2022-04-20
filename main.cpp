@@ -41,13 +41,11 @@ int main(int argc, char **argv) {
                 } else if (instruction == "s") {
                     argent = board.supprimerTourelle(argent);
                 } else if (instruction == "v") {
-                    board.apparitionEnnemie();
-                } else if (instruction == "a") {
-                    vie = board.avancerEnnemie(vie);
-                } else if (instruction == "t") {
-                    board.tirer();
-                } else if (instruction == "g") {
-                    argent = board.avancerProjectile(argent);
+                    // La fonction vague renvoie plusieurs variables donc on utilise un tuple pour les attribuer
+                    tuple<int, int> vieArgent(vie, argent);
+                    vieArgent = board.vague(vie, argent);
+                    vie = get<0>(vieArgent);
+                    argent = get<1>(vieArgent);
                 }
             }
             cout << "Game Over" << endl;
